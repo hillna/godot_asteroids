@@ -1,15 +1,23 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://scenes/Laser.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/sprites/playerShip1_orange.png" type="Texture" id=3]
+[ext_resource path="res://assets/sprites/thrust/fire11.png" type="Texture" id=4]
+[ext_resource path="res://assets/sprites/thrust/fire14.png" type="Texture" id=5]
+[ext_resource path="res://assets/sprites/thrust/fire15.png" type="Texture" id=6]
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ) ],
+"loop": true,
+"name": "default",
+"speed": 10.0
+} ]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 8.31995
 height = 23.5518
-
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 24.967, 8.124 )
 
 [node name="Player" type="Area2D"]
 position = Vector2( 497.372, 396.204 )
@@ -23,11 +31,17 @@ Laser = ExtResource( 2 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 3 )
 
+[node name="Thrust" type="AnimatedSprite" parent="."]
+scale = Vector2( 0.8, 0.8 )
+frames = SubResource( 3 )
+playing = true
+offset = Vector2( 0, 37 )
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
 shape = SubResource( 1 )
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2( 0, 5 )
-shape = SubResource( 2 )
+[node name="LaserCooldown" type="Timer" parent="."]
+wait_time = 0.25
+one_shot = true
+[connection signal="timeout" from="LaserCooldown" to="." method="_on_LaserCooldown_timeout"]

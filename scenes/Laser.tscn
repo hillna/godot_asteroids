@@ -18,15 +18,34 @@ animations = [ {
 extents = Vector2( 6.94214, 18.9717 )
 
 [node name="Laser" type="RigidBody2D"]
+position = Vector2( 0, -10 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true
 }
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+light_mask = 2
 scale = Vector2( 0.5, 0.5 )
 frames = SubResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
 shape = SubResource( 2 )
+
+[node name="StartAnimation" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+autostart = true
+
+[node name="LaserFade" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="VisibilityEnabler2D" type="VisibilityEnabler2D" parent="."]
+pause_animations = false
+pause_animated_sprites = false
+[connection signal="body_entered" from="." to="." method="_on_Laser_body_entered"]
+[connection signal="timeout" from="StartAnimation" to="." method="_on_StartAnimation_timeout"]
+[connection signal="timeout" from="LaserFade" to="." method="_on_LaserFade_timeout"]
+[connection signal="screen_exited" from="VisibilityEnabler2D" to="." method="_on_VisibilityEnabler2D_screen_exited"]

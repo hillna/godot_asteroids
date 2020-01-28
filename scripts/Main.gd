@@ -41,4 +41,11 @@ func _on_MeteorTimer_timeout():
 	# Set the velocity (speed & direction)
 	meteor.linear_velocity = Vector2(rand_range(meteor.min_speed, meteor.max_speed), 0)
 	meteor.linear_velocity = meteor.linear_velocity.rotated(direction)
+	# Meteor signals
 	$HUD.connect("start_game", meteor, "_on_start_game")
+	meteor.connect("meteor_destroyed", self, "_on_meteor_destroyed")
+
+
+func _on_meteor_destroyed():
+	score = score + 1
+	$HUD.update_score(score)
